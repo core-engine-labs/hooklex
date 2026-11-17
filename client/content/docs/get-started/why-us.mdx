@@ -1,0 +1,107 @@
+---
+title: Why APP_NAME?
+description: Understand what makes APP_NAME different from alternatives and why developers choose it.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Card, Cards } from "fumadocs-ui/components/card";
+
+## The problem with existing tools
+
+Most webhook inspection tools do one thing: give you a URL and show you raw JSON. That's useful for five minutes. It breaks down the moment you're:
+
+- Managing multiple projects or integrations
+- Trying to reproduce a bug from a request that fired 2 days ago
+- Working with binary uploads, form data, or XML payloads
+- Sharing a request with a teammate to debug together
+- Needing to forward the request to your local dev server while also capturing it
+
+APP_NAME is built for the full debugging workflow, not just the first step.
+
+---
+
+## How APP_NAME compares
+
+| Feature                           | APP_NAME         | Webhook.site | RequestBin | ngrok Inspect |
+| --------------------------------- | ---------------- | ------------ | ---------- | ------------- |
+| Any HTTP method                   | ✅               | ✅           | ✅         | ✅            |
+| JSON / XML syntax highlighting    | ✅ Monaco editor | Basic        | Basic      | Basic         |
+| Binary / image / PDF preview      | ✅               | ❌           | ❌         | ❌            |
+| Organized collections             | ✅               | ❌           | ❌         | ❌            |
+| Global search (headers, body, IP) | ✅               | ❌           | ❌         | ❌            |
+| Export (CSV / PDF / Markdown)     | ✅               | Partial      | ❌         | ❌            |
+| TypeScript type generation        | ✅               | ❌           | ❌         | ❌            |
+| Replay system (isReplay)          | ✅               | ❌           | ❌         | Partial       |
+| Forward requests (Cloud — Coming Soon) | ✅ (Cloud)       | ✅ (paid)    | ❌         | ✅ (core)     |
+| Custom responses (Cloud — Coming Soon) | ✅ (Cloud)       | ✅ (paid)    | ❌         | ❌            |
+| Condition rules (Cloud — Coming Soon)  | ✅ (Cloud)       | ❌           | ❌         | ❌            |
+
+<Callout type="tip">
+  The Open-Source Version (Free - Runs Locally) includes full server and client code, organized collections, Monaco editor preview, global search, and isReplay tracking. Advanced paid features like Custom Actions and public link sharing will be available in the upcoming Cloud Version.
+
+</Callout>
+
+---
+
+## Built for real debugging workflows
+
+### You don't just want to _see_ the request. You want to _work_ with it.
+
+Other tools treat the request as a log entry. APP_NAME treats it as a **workable artifact**:
+
+- **Replay it** — resend the captured request with `?isReplay=true&replayedFrom=<your_custom_label>` to instantly tag and identify your re-run in the UI header and search history
+- **Share it** — make it public and hand the link to a teammate *(Cloud Version — Coming Soon)*
+- **Export it** — drop it into a report, a spreadsheet, or your notes
+- **Type it** — convert the body to TypeScript so you can code against it immediately
+
+### Your workspace scales with your projects
+
+Flat request lists get unmanageable fast. Collections let you organize by project, client, environment, or integration — the same mental model you already use in Postman, but for incoming traffic.
+
+### How the isReplay System Simplifies Debugging
+
+Traditional debugging tools make it difficult to locate and trace re-executed test requests amidst thousands of incoming events in a busy log history.
+
+**APP_NAME** allows you to **manually replay** any captured request while tagging it directly in the UI dashboard. To initiate a replay with visual tracking, append two dedicated query parameters to your webhook endpoint:
+
+```text
+?isReplay=true&replayedFrom=<your_custom_label>
+```
+
+| Parameter                          | Description                                                                                                                                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isReplay=true                      | Instructs APP_NAME to display a prominent REPLAY badge in the sidebar request list, making test runs instantly distinguishable from live incoming traffic.                                                          |
+| replayedFrom=`<your_custom_label>` | A user-provided identity label displayed prominently at the top of the request summary. It lets you instantly recognize the origin of the re-run and search for it directly without digging through parameter tabs. |
+
+Because these parameters surface key metadata directly in the UI, you can quickly locate, identify, and debug replayed requests in active developer environments
+
+<Callout type="warning">
+  Both isReplay=true and replayedFrom must be sent together. Omitting either
+  parameter causes the request to be rejected with a `400` Bad Request.
+</Callout>
+
+---
+
+## Who builds with APP_NAME?
+
+- **Indie hackers** integrating Stripe, Lemon Squeezy, or Paddle into their SaaS
+- **Backend developers** testing event-driven architectures locally
+- **QA engineers** capturing and reproducing webhook payloads for regression testing
+- **Teams** sharing and reviewing incoming requests across environments
+
+---
+
+## Ready to get started?
+
+<Cards>
+  <Card
+    title="Create your first collection"
+    href="/docs/collections/create-request"
+    description="Set up your endpoint and send your first request in under a minute."
+  />
+  <Card
+    title="Explore Custom Actions"
+    href="/docs/custom-actions"
+    description="See how forwarding, custom responses, and rules work together."
+  />
+</Cards>

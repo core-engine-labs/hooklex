@@ -1,0 +1,197 @@
+---
+title: Create a Request
+description: Learn how to create a collection and start receiving HTTP requests in APP_NAME.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+## Create a collection
+
+<Steps>
+  <Step>
+    ### Open APP_NAME and click "Create Collection"
+    From your dashboard, click the **Create Collection** button. Give your collection a name that reflects its purpose — for example, `stripe-webhooks`, `github-events`, or `local-dev`.
+  </Step>
+  <Step>
+    ### Add a description (optional)
+    Give your collection a short description to explain what it is for — for example, `Stripe payment events for staging` or `GitHub push and PR webhooks`. This helps you and your team identify the collection later.
+
+    <Callout type="tip">
+      Hover over a collection name to see its description in a tooltip. This makes it easy to tell similar collections apart at a glance.
+    </Callout>
+
+  </Step>
+  <Step>
+    ### Copy your endpoint URL
+    Once created, your collection immediately shows a unique endpoint URL:
+
+https://app-name.com/wh/{token}/path
+
+    Copy this URL. You'll use it as the destination for any webhook or HTTP request you want to inspect.
+
+  </Step>
+  <Step>
+    ### Point your webhook at the URL
+    Paste the endpoint URL into whatever is sending requests — a third-party dashboard (Stripe, GitHub, Shopify), a `curl` command, a Postman request, or your app's config.
+  </Step>
+  <Step>
+    ### Watch requests arrive in real time
+    Go back to APP_NAME. As soon as a request hits your endpoint, it appears in the collection's request list — instantly, with no refresh needed.
+  </Step>
+</Steps>
+---
+
+## Sending a test request manually
+
+You don't have to wait for a third-party service to test your collection. Use `curl` to send a request directly:
+
+```bash
+# Simple POST with a JSON body
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "Content-Type: application/json" \
+  -d '{"event": "user.created", "userId": 42}'
+```
+
+```bash
+# GET request with query parameters
+curl "https://app-name.com/wh/{token}/path?source=test&env=staging"
+```
+
+```bash
+# Custom headers
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "X-Webhook-Secret: mysecret" \
+  -H "Content-Type: application/json" \
+  -d '{"ping": true}'
+```
+
+### Uploading files: images, video, audio, PDF, etc.
+
+<Callout type="warning">
+  To upload a file to a webhook, use `--data-binary`. Do **not** use `-d` or
+  `--data` for files. Those options are meant for text/JSON and can corrupt
+  binary data, causing the webhook request to be rejected.
+</Callout>
+
+Use `--data-binary @filename` and set the correct `Content-Type` for the file.
+
+```bash
+# Upload an image
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "Content-Type: image/png" \
+  --data-binary @./image.png
+```
+
+```bash
+# Upload a video
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "Content-Type: video/mp4" \
+  --data-binary @./clip.mp4
+```
+
+```bash
+# Upload audio
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "Content-Type: audio/mpeg" \
+  --data-binary @./sound.mp3
+```
+
+```bash
+# Upload a PDF or other document
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "Content-Type: application/pdf" \
+  --data-binary @./document.pdf
+```
+
+```bash
+# Unknown file type
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @./file.bin
+```
+
+If the file path contains spaces, quote it:
+
+```bash
+curl -X POST https://app-name.com/wh/{token}/path \
+  -H "Content-Type: application/pdf" \
+  --data-binary @"./my document.pdf"
+```
+
+<Callout type="tip">
+  Use `curl` to quickly verify your collection is live before connecting a real
+  service. For file uploads, remember: `--data-binary @file`, not `-d`.
+</Callout>
+
+---
+
+## What you'll see after a request arrives
+
+Once a request is captured, clicking it opens the **request detail view**. You'll see:
+
+| Field          | Description                                                         |
+| -------------- | ------------------------------------------------------------------- |
+| **Method**     | The HTTP method used (`GET`, `POST`, etc.)                          |
+| **URL**        | The full URL including path and query string                        |
+| **Headers**    | All request headers, formatted as a key-value list                  |
+| **Body**       | Rendered based on content type (JSON, XML, form-data, binary, etc.) |
+| **IP Address** | The source IP of the sender                                         |
+| **Timestamp**  | Exact date and time the request was received                        |
+
+---
+
+## Replaying a Request
+
+Once a request is captured, you can replay it manually at any time to re-test your webhook handling without having to re-trigger the original upstream event.
+
+To replay a request, append two query parameters to your endpoint URL with your chosen identifier or label:
+
+```text
+?isReplay=true&replayedFrom=<your_custom_label>
+```
+
+| Parameter                          | Description                                                                                                                                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isReplay=true                      | Instructs APP_NAME to display a prominent REPLAY badge in the sidebar request list, making test runs instantly distinguishable from live incoming traffic.                                                          |
+| replayedFrom=`<your_custom_label>` | A user-provided identity label displayed prominently at the top of the request summary. It lets you instantly recognize the origin of the re-run and search for it directly without digging through parameter tabs. |
+
+<Callout type="warning">
+  Both isReplay=true and replayedFrom must be sent together. Omitting either
+  parameter causes the request to be rejected with a `400` Bad Request.
+</Callout>
+
+The replayed request appears in your collection separately and is clearly marked in the UI so you can distinguish it from standard incoming requests. Replays surface critical tracking metadata upfront, making it easy to trace and search for re-executed requests across busy logging environments
+
+<Callout type="info">
+  The isReplay and replayedFrom parameters are developer UI features. They surface identification context directly at the top of the details view so you don't need to manually inspect query parameter lists.
+</Callout>
+
+
+---
+
+## Making a request public <span style={{ fontSize: '0.75rem', background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', borderRadius: '0.375rem', padding: '0.125rem 0.5rem', marginLeft: '0.5rem', verticalAlign: 'middle' }}>Paid — Cloud Coming Soon</span>
+
+<Callout type="warn">
+  Making requests public via shareable web links is a **paid feature available exclusively in the upcoming Cloud Version (Coming Soon)**. In the **Open-Source Version (Free - Runs Locally)**, all captured requests remain private on your local machine, and you can share request payloads offline using local exports (CSV, Markdown, or PDF).
+</Callout>
+
+Any captured request can be made public in the Cloud version. Once public, anyone with the link can view the full request details — headers, body, query params, and metadata — without needing an APP_NAME account.
+
+This is useful for:
+
+- Sharing a payload with a teammate for review
+- Attaching a request to a bug report
+- Documenting an integration's webhook format
+
+---
+
+## Exporting a request
+
+From any request's detail view, you can export it in three formats:
+
+- **CSV** — Useful for logging or spreadsheet analysis
+- **PDF** — For reports or documentation
+- **Markdown** — For notes, READMEs, or internal wikis
+
+You can also **convert the request body to TypeScript types** directly from the detail view — if a body is JSON or XML and get a typed interface you can drop straight into your codebase.

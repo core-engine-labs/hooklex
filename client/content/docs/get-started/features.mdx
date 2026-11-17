@@ -1,0 +1,162 @@
+---
+title: Features Overview
+description: A complete overview of all the capabilities APP_NAME provides for inspecting and managing HTTP requests.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Card, Cards } from "fumadocs-ui/components/card";
+
+## Supported HTTP Methods
+
+APP_NAME accepts and routes the following HTTP methods without extra configuration:
+
+- **Standard HTTP Methods:** `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`, `TRACE`
+- **Supported Extension Methods:** `PURGE`, `PROPFIND`
+
+Any other HTTP method or unsupported verb will be rejected with an `HTTP 405 Method Not Allowed` status code along with an `Allow` header listing the supported methods above.
+
+---
+
+## Beautiful Content Preview
+
+Raw request bodies are rendered intelligently based on their content type:
+
+Preview for images, videos, and PDFs, with a copy-as-Base64 option for binary data
+
+<Callout type="tip">
+  The Monaco editor (the same editor that powers VS Code) gives you collapsible
+  nodes, search, and full syntax highlighting — making even deeply nested JSON
+  easy to read.
+</Callout>
+
+---
+
+## Organized Collections
+
+Group related webhook endpoints into **collections** — a familiar concept if you've used Postman or Insomnia, but designed for _receiving_ requests rather than sending them.
+
+- Each collection gets a unique endpoint URL
+- Requests are scoped to their collection
+- Your workspace stays clean and organized, even across multiple projects or clients
+
+---
+
+## Powerful Search
+
+APP_NAME's global search goes far beyond filtering by name. You can search across:
+
+- collection name
+- Body content
+- IP address
+- Headers
+- Query parameters
+- Full-text body content
+
+You can also filter by:
+
+- `isReplay: true / false` — isolate replayed requests from original triggers
+- Visibility — public vs. private requests
+
+---
+
+## Request Details & Export
+
+Every captured request includes:
+
+- Full URL with query parameters
+- All request headers
+- Complete request body
+- Source IP address
+- Timestamp and HTTP method
+
+From any request, you can:
+
+- **Make it public** — generate a shareable link anyone can view _(Paid — Available in upcoming Cloud Version)_
+- **Export as CSV** — pull request data into a spreadsheet
+- **Export as PDF** — create a printable report
+- **Export as Markdown** — keep a record in your docs or notes
+- **Convert to TypeScript types** — if body is JSON or XML get instantly typed interface
+
+---
+
+## The isReplay System
+
+The **isReplay system** allows developers to **identify, track, and search re-executed requests** directly in the UI dashboard while debugging.
+
+When testing or re-running webhooks during debugging, identifying which request is a re-run and where it came from can be difficult in a large codebase or busy request history. The `isReplay` system allows you to re-send requests with explicit query parameters that surface key identification metadata right at the top of the UI without having to hunt through parameter lists.
+
+### Developer Debugging Workflow
+
+When a webhook arrives and you need to re-test it, take your original identifier or custom label (e.g., `msg_wrong`) and append both query parameters to your webhook URL manually:
+
+```text
+
+?isReplay=true&replayedFrom=msg_wrong
+
+```
+
+APP_NAME evaluates these parameters as follows:
+
+| Parameter                | Behavior                                                                                                                                                                                                               |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `isReplay=true`          | Marks the request with a prominent **REPLAY** badge in the sidebar list so you can immediately distinguish test runs from live incoming requests.                                                                      |
+| `replayedFrom=msg_wrong` | A user-provided identity label displayed in the top summary banner of the request details. It lets you instantly recognize where the re-run came from and search for it easily without digging through parameter tabs. |
+
+### Parameter Validation Rules
+
+Both parameters must be supplied together:
+
+- `isReplay=true` alone → Tags the request as a replay, but drops the user-defined label needed for clear visual identification in the UI header.
+
+- `replayedFrom=<id>` alone → Passes a custom identity label without marking the request as a replay in the UI history list.
+
+The validation rule is strict: send **both** parameters, or send **neither**. Requests containing only one parameter are rejected with a `400 Bad Request`.
+
+`replayedFrom` is stored purely for developer reference and UI display. APP_NAME does not enforce strict validation schemas or background linking on custom replay tags.
+
+### Request Type Behavior
+
+| Request Type            | isReplay | replayedFrom  | UI Display & Visibility Behavior                                                                                                       |
+| ----------------------- | -------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Normal Client Request   | absent   | absent        | Rendered as a standard live request in the history list.                                                                               |
+| Manual Developer Replay | `true`   | `<custom_id>` | Displays an orange **REPLAY** badge in the sidebar and highlights **Replayed (from `<custom_id>`)** directly in the top header banner. |
+
+The `isReplay` and `replayedFrom` tags are designed for developer UI convenience. They surface critical tracking context upfront so you can instantly identify and search for replayed requests in busy environments.
+
+The isReplay mechanism is ideal for event-driven systems and third-party webhooks (e.g., Stripe, Shopify) where debugging requires quick identification and traceability across numerous test requests.
+
+---
+
+## Custom Actions <span style={{ fontSize: '0.75rem', background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', borderRadius: '0.375rem', padding: '0.125rem 0.5rem', marginLeft: '0.5rem', verticalAlign: 'middle' }}>Paid — Cloud Coming Soon</span>
+
+<Callout type="info">
+  **Custom Actions** and **public request sharing** are paid features available
+  exclusively in the upcoming **Cloud Version (Coming Soon)**. The **Open-Source
+  Version (Free - Runs Locally)** includes full server and client source code
+  for local execution, Monaco previews, collections, `isReplay` tracking, and
+  local exports.
+</Callout>
+
+Custom Actions is the power tier of APP_NAME. On top of everything above, you get:
+
+- **Forward requests** — proxy incoming requests to your own server in real time
+- **Custom responses** — return a specific status code, headers, and body instead of the default
+- **Condition rules** — apply logic to both forwarding and custom responses (e.g. only forward if a header matches, only return a custom response if the body contains a certain field)
+
+<Cards>
+  <Card
+    title="Forward Requests"
+    href="/docs/custom-actions/forward-request"
+    description="Proxy any incoming request to your own server."
+  />
+  <Card
+    title="Custom Responses"
+    href="/docs/custom-actions/custom-actions-response"
+    description="Return your own status code, headers, and body."
+  />
+  <Card
+    title="Condition Rules"
+    href="/docs/custom-actions/rules"
+    description="Apply logic to control when actions trigger."
+  />
+</Cards>

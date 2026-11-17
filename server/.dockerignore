@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+dist
+.git
+.gitignore
+README.md
+.env
+.gitattributes
+src/generated
+src/cli
+Dockerfile
+docker-compose.yml

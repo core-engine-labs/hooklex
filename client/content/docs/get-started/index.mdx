@@ -1,0 +1,54 @@
+---
+title: How to use
+description: Learn how to start inspecting HTTP requests in seconds.
+
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+
+<Callout type="info">
+  No server setup. No ngrok tunnel. No print statements. Just a URL and instant visibility.
+</Callout>
+
+## Getting started in 3 steps
+
+<Steps>
+  <Step>
+    ### Create a Collection
+    A collection is your workspace. It holds a unique endpoint URL and organizes all the requests sent to it. Think of it like a Postman collection — but for receiving, not sending.
+  </Step>
+  <Step>
+    ### Send a request to your endpoint
+    Copy the generated URL from your collection and use it anywhere — a webhook config panel, a `curl` command, a Postman request, or your app's environment variables.
+
+```bash
+    curl -X POST https://app-name.com/c/your-endpoint \
+      -H "Content-Type: application/json" \
+      -d '{"event": "user.created", "id": 42}'
+```
+  </Step>
+  <Step>
+    ### Inspect and export
+    Every incoming request is captured and displayed with full detail. You can export it locally as CSV/PDF/Markdown or convert its JSON body directly to a TypeScript type; public request sharing will be available in the upcoming Cloud Version.
+  </Step>
+</Steps>
+
+## What can you do with APP_NAME?
+
+| Use case | How APP_NAME helps |
+|---|---|
+| Debug a Stripe webhook | See the exact payload, headers, and signature in real time |
+| Test a GitHub Actions integration | Inspect every event without touching your server |
+| Share a request with a teammate | Make any request public and share the link (Paid — Cloud Version Coming Soon) |
+| Generate TypeScript types | Convert any JSON or XML body to types instantly |
+
+## Next steps
+
+<Cards>
+  <Card title="Features Overview" href="/docs/get-started/features" description="A full breakdown of everything APP_NAME can do." />
+  <Card title="Why APP_NAME?" href="/docs/get-started/why-us" description="How APP_NAME compares to alternatives." />
+  <Card title="Collections" href="/docs/collections" description="Learn how collections work and how to create your first one." />
+</Cards>

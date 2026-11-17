@@ -1,0 +1,120 @@
+---
+title: Custom Response
+description: Return a fully custom HTTP response to the caller using APP_NAME's Custom Response action — with or without conditions.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+
+The **Custom Response** action lets you define exactly what **APP_NAME** returns to the original caller. You control the status code, headers, and body — turning your endpoint into a fully programmable mock server.
+
+<Callout type="warn">
+  Custom Response is a **paid feature available exclusively in the upcoming Cloud Version (Coming Soon)**.
+</Callout>
+
+## Two Ways to Use Custom Response
+
+**APP_NAME** supports two variants of the Custom Response action:
+
+<Tabs items={['Without Condition', 'With Condition']}>
+  <Tab value="Without Condition">
+    ### Unconditional Custom Response
+
+    The response is **always** returned, regardless of the request content.
+
+    Use this when:
+    - You want a static mock response (e.g., always return `200 OK` with a fixed JSON body).
+    - You are testing a third-party service that expects a specific acknowledgment.
+
+```json
+{
+  "status": 200,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": "{\"received\": true}"
+}
+```
+
+  </Tab>
+
+<Tab value="With Condition">
+    ### Conditional Custom Response
+
+    To send a custom response conditionally, place a **Condition action** prior to the **Custom Response action** in your pipeline order. 
+
+    The custom response runs **only if the condition passes**. If the condition fails, the pipeline execution breaks immediately, skipping all subsequent actions.
+
+    Use this when:
+    - You want to return different responses based on request content.
+    - You are simulating error conditions for specific payloads.
+
+    See the [Rules](/docs/custom-actions/rules) page for full details on configuring condition steps.
+
+  </Tab>
+</Tabs>
+
+<Callout type="info">
+  If **no** Custom Response action is configured, APP_NAME returns a default
+  `200 OK` response to the caller.
+</Callout>
+
+## Setting Up a Custom Response
+
+<Steps>
+  <Step>
+    ### Open APP_NAME and click "Create Custom Actions"
+
+    From your dashboard, click the **Create Custom Actions** button. Select collection from Dropdown for which you want a Custom Response action
+
+  </Step>
+
+  <Step>
+    ### Add a Custom Response Action
+
+     Select **Custom Response** from the action type menu.
+
+  </Step>
+
+  <Step>
+    ### Define the Response
+
+    Configure the response that will be returned to the original caller:
+
+    | Field           | Description                                           |
+    |-----------------|-------------------------------------------------------|
+    | **Status Code** | Any valid HTTP status code (e.g., `200`, `422`, `503`) |
+    | **Headers**     | Key-value pairs to include in the response             |
+    | **Body**        | The raw response body (JSON, plain text, XML, etc.)    |
+    | **Order** | Enter a positive order number. APP_NAME automatically fixes the order of the other actions. Negative order numbers are not allowed. |
+    | **Enabled (optional)** | You can save an action as a draft by turning off the **Enabled** switch. |
+
+<Callout type="info">
+  {" "}
+  **Headers:** Enter header keys and values without quotation marks. For
+  example, use `content-type` and `application/json`, not `"content-type"` and
+  `"application/json"`.{" "}
+</Callout>
+
+<Callout type="warning">
+  {" "}
+  **Order** number must be positive not negative.{" "}
+</Callout>
+  </Step>
+
+  <Step>
+    ### Save and Test
+
+    Save the action. The next request to your endpoint will receive your custom response.
+
+  </Step>
+</Steps>
+
+## Behavior & Notes
+
+- Custom Response actions execute **after** any Forward Request actions in the chain, unless a condition stops the chain earlier.
+- Only one Custom Response can be returned per request. Once a Custom Response executes, the response is sent and the chain ends.
+- If multiple Custom Response actions exist, they execute in ascending order based on their **Order** value until one completes successfully.
+- Each Custom Response action must have a positive **Order** number. Negative order numbers are not allowed. APP_NAME automatically arranges the actions using these order values.
+- For example, if two Custom Response actions have orders `3` and `7`, the action with order `3` runs first. If it succeeds, the chain ends and the action with order `7` does not run.

@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+*.tsbuildinfo
+
+# Next.js build output
+.next/
+out/
+
+# Production logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# Local environment files
+.env*.local
+.env
+
+# Vercel / Git
+.vercel
+.git
+.gitignore
+.gitattributes
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# MD files
+README.md
+
+# docker file
+Dockerfile
+docker-compose.yml

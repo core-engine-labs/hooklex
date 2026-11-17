@@ -1,0 +1,237 @@
+---
+title: Examples
+description: Real-world examples of using APP_NAME collections to inspect and debug HTTP requests.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Card, Cards } from "fumadocs-ui/components/card";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+## Example 1 — Debugging a Stripe Webhook
+
+**Scenario:** You've set up a Stripe webhook to fire on `payment_intent.succeeded`, but your handler isn't running. You need to see exactly what Stripe is sending.
+
+**Setup:**
+
+1. Create a collection named `stripe-prod`
+2. Copy the endpoint URL: `https://app-name.com/wh/{token}/stripe-prod`
+3. Paste it as the webhook URL in your Stripe Dashboard under **Developers → Webhooks**
+4. Trigger a test event from Stripe
+
+**What you'll see in APP_NAME:**
+
+```json
+{
+  "id": "evt_3NrQ2L2eZvKYlo2C1ABC1234",
+  "type": "payment_intent.succeeded",
+  "data": {
+    "object": {
+      "id": "pi_3NrQ2L2eZvKYlo2C1XYZ9876",
+      "amount": 9900,
+      "currency": "usd",
+      "status": "succeeded"
+    }
+  }
+}
+```
+
+You can now inspect the full payload, check the `Stripe-Signature` header, and convert the body to TypeScript types for your handler.
+
+---
+
+## Example 2 — Inspecting a GitHub Actions Webhook
+
+**Scenario:** You're building a CI/CD automation that reacts to GitHub `push` events, and you want to understand the payload structure before writing any handler code.
+
+**Setup:**
+
+1. Create a collection named `github-push-events`
+2. Go to your GitHub repository → **Settings → Webhooks → Add webhook**
+3. Set the Payload URL to your APP_NAME endpoint
+4. Set Content-Type to `application/json`
+5. Select the `push` event (or "Send me everything")
+6. Push a commit to trigger the webhook
+
+**What you'll see:**
+
+- `X-GitHub-Event: push` in the headers
+- `X-Hub-Signature-256` for verifying the payload
+- The full push payload including commits, author, branch, and diff metadata
+
+You can now build your handler with confidence, knowing the exact shape of the data you'll receive.
+
+---
+
+## Example 3 — Testing a File Upload Endpoint
+
+**Scenario:** You're building a service that accepts raw file uploads (image, video, audio, PDF, etc.), and you want to verify the request structure before wiring up your storage backend.
+
+<Callout type="warning">
+  This endpoint accepts **raw binary** via `--data-binary`, **not**
+  `multipart/form-data`. Do not use `-F` — files sent that way will be rejected.
+</Callout>
+
+**Send a test upload:**
+
+```bash
+# Image
+curl -X POST "https://app-name.com/wh/{token}/up-file?userId=42&album=vacation" \
+  -H "Content-Type: image/jpeg" \
+  --data-binary @/path/to/photo.jpg
+```
+
+```bash
+# Video
+curl -X POST "https://app-name.com/wh/{token}/up-file" \
+  -H "Content-Type: video/mp4" \
+  --data-binary @/path/to/clip.mp4
+```
+
+```bash
+# PDF / document
+curl -X POST "https://app-name.com/wh/{token}/up-file" \
+  -H "Content-Type: application/pdf" \
+  --data-binary @/path/to/document.pdf
+```
+
+```bash
+# Unknown / generic binary
+curl -X POST "https://app-name.com/wh/{token}/up-file" \
+  -H "Content-Type: application/octet-stream" \
+  --data-binary @/path/to/file.bin
+```
+
+**What you'll see in APP_NAME:**
+
+- The uploaded file rendered as an **inline preview** (base64) inside body detail view section
+- Detected **MIME type**, **file size**, and the raw `Content-Type` header you sent
+- Any **query parameters** you passed (e.g. `userId: 42`, `album: vacation`)
+- The full request headers for debugging
+
+<Callout type="info">
+  **How uploads work here** - Send the file as **raw bytes** with `--data-binary
+  @file`. Multipart (`-F`) is not supported. - Extra metadata (userId, tags,
+  etc.) goes in the **query string** or **custom headers** — not form fields. -
+  Files are stored **base64-encoded**, so preview size is ~33% larger than the
+  original. - Set `Content-Type` to the real file type. The server also sniffs
+  magic bytes for safety.
+</Callout>
+
+<Callout type="warning">
+  **Payload limits** - Maximum upload size depends on your **subscription
+  plan**. - Base64 preview adds ~33% overhead — a 5 MB plan slot holds roughly a
+  3.7 MB file. - Requests over the limit are rejected with `413 Payload Too
+  Large`.
+</Callout>
+
+<Callout type="tip">
+  Use `curl` to verify your collection is live before connecting a real service.
+  For file uploads, remember: `--data-binary @file`, **never** `-d` or `-F`.
+</Callout>
+
+---
+
+## Example 4 — Replay a Request for Targeted Debugging
+
+Use the replay mechanism as a targeted debugging tool to test fixes against captured payloads without losing track of your test runs in busy request logs.
+
+Because **APP_NAME** logs each request independently without automatically linking requests together, you manually provide a custom label in `replayedFrom` so you can instantly recognize and locate the re-run directly in the UI.
+
+<Steps>
+  <Step>
+     Copy the original request body and headers
+
+    Open the target request in the **APP_NAME** detail view and copy the raw payload and header values.
+
+  </Step>
+
+  <Step>
+   Resend with manual replay parameters
+
+    ```bash
+    curl -X POST "[https://app-name.com/wh/](https://app-name.com/wh/){token}/path?isReplay=true&replayedFrom=trg_9f3a21" \
+      -H "Content-Type: application/json" \
+      -d '{"event":"user.created","userId":42}'
+    ```
+
+    * `isReplay=true` &rarr; Marks the request with a **REPLAY** badge in the sidebar history list so you can instantly separate test runs from live incoming requests.
+    * `replayedFrom=<your_custom_label>` &rarr; A user-provided identity tag (e.g., `trg_9f3a21` or any custom string) displayed in the top header summary. This lets you instantly recognize where the re-run came from and search for it easily without digging through parameter tabs.
+
+    *Both query parameters must be passed together.*
+
+  </Step>
+
+  <Step>
+    Inspect the execution in the UI
+
+    Open **APP_NAME** to view the incoming replayed request. The **REPLAY** badge and `Replayed (from trg_9f3a21)` header banner give you immediate confirmation that the request was logged under your custom identity tag.
+
+  </Step>
+
+  <Step>
+   Apply fix, then search and replay again
+
+    Apply your code patch and re-run the `curl` command. Use the search bar in **APP_NAME** to query `trg_9f3a21` and instantly bring up all related re-runs to confirm successful execution.
+
+  </Step>
+</Steps>
+
+<Callout type="info">
+  The `isReplay` and `replayedFrom` parameters are developer UI conveniences.
+  They surface identification context directly at the top of the request view so
+  you don't need to manually inspect query parameter lists.
+</Callout>
+
+<Callout type="warning">
+  Both query parameters are mandatory. Passing `isReplay=true` or `replayedFrom`
+  alone will return a `400 Bad Request`.
+</Callout>
+
+---
+
+## Example 5 — Sharing a Request with a Teammate <span style={{ fontSize: '0.75rem', background: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', borderRadius: '0.375rem', padding: '0.125rem 0.5rem', marginLeft: '0.5rem', verticalAlign: 'middle' }}>Cloud — Coming Soon</span>
+
+<Callout type="info">
+  Making requests public via shareable web links is a paid feature available in the upcoming **Cloud Version**. In the local Open-Source version, you can share payloads using the local **Export** features (CSV, Markdown, PDF).
+</Callout>
+
+**Scenario:** You've captured a malformed webhook payload from a third-party integration. You want to share it with a teammate without giving them access to your APP_NAME account.
+
+**Steps:**
+
+1. Open the request in your collection
+2. Click **Make Public**
+3. Copy the public link and paste it into Slack, a GitHub issue, or a bug report
+
+Your teammate can open the link in any browser and see the full request — headers, body, query params, IP, and timestamp — with no login required.
+
+---
+
+## Example 6 — Exporting Requests for a Report
+
+**Scenario:** You're auditing all webhook traffic received from a client integration over the past week and need to include it in a PDF report.
+
+**Steps:**
+
+1. Open the relevant requests in your collection
+2. Use the **global search** to filter by IP address, content, or date range
+3. Open each request and click **Export → PDF**
+
+Each exported PDF includes the full request detail: method, URL, headers, body, IP, and timestamp — ready to drop into a report or attach to a ticket.
+
+---
+
+## What's next?
+
+<Cards>
+  <Card
+    title="Custom Actions"
+    href="/docs/custom-actions"
+    description="Forward requests, return custom responses, and apply condition rules — available in the upcoming Cloud Version (Paid - Coming Soon)."
+  />
+  <Card
+    title="How Request Types Handled"
+    href="/docs/collections/how-request-types-handled"
+    description="See how every content type is rendered in APP_NAME."
+  />
+</Cards>

@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Collection {
+  id           String    @id @default(cuid())
+  name         String
+  description  String?
+  token        String    @unique @default(cuid())
+  requestCount Int       @default(0)
+  requests     Request[]
+
+  isDeleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([id])
+  @@index([isDeleted, id])
+  @@index([id, isDeleted])
+}
+
+model Request {
+  id           String     @id @default(cuid())
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  method       String
+  path         String?
+  headers      Json
+  ip           String
+  contentType  String
+  query        Json?
+  body         String?    @db.Text
+  bodySize     Int        @default(0)
+  isReplay     Boolean    @default(false)
+  replayedFrom String?
+  createdAt    DateTime   @default(now())
+  expire_after Int        @default(1)
+  isDeleted    Boolean    @default(false)
+  updatedAt    DateTime   @updatedAt
+
+  @@index([collectionId, createdAt(sort: Desc)])
+  @@index([collectionId, method, createdAt(sort: Desc)])
+  @@index([collectionId, isReplay, createdAt(sort: Desc)])
+  @@index([collectionId, ip, createdAt(sort: Desc)])
+  @@index([expire_after, createdAt])
+}

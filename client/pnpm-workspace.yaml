@@ -1,0 +1,33 @@
+allowBuilds:
+  core-js: true
+  esbuild: false
+  sharp: false
+  unrs-resolver: false
+minimumReleaseAgeExclude:
+  - dompurify@3.4.11
+  - dompurify@3.4.9
+  - dompurify@3.4.13
+  - next@16.3.3
+  - next@16.3.6
+  - dompurify@3.4.16
+  - dompurify@3.4.12
+  - braces@3.0.4
+  - source-map-js@1.2.2
+  - sharp@0.35.5
+  - "@modelcontextprotocol/sdk@1.31.0"
+  - next@16.3.8
+overrides:
+  "@modelcontextprotocol/sdk@>=1.12.0 <1.31.0": ^1.31.0
+  dompurify@<3.4.9: ^3.4.9
+  dompurify@<=3.4.10: ^3.4.11
+  dompurify@<=3.4.11: ^3.4.12
+  dompurify@<=3.4.12: ^3.4.13
+  dompurify@<=3.4.15: ^3.4.16
+  dompurify@>=3.4.13 <=3.4.15: ^3.4.16
+  next@>=16.0.0 <16.3.3: ^16.3.3
+  next@>=16.0.0 <16.3.8: ^16.3.8
+  next@>=16.2.0 <16.3.6: ^16.3.6
+  next@>=16.3.0 <16.3.8: ^16.3.8
+  sharp@<0.35.5: ^0.35.5
+  source-map-js@>=1.0.0 <1.2.2: ^1.2.2
+

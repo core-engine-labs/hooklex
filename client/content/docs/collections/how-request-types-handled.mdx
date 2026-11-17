@@ -1,0 +1,217 @@
+---
+title: How Request Types handled?
+description: Learn how APP_NAME handles different HTTP methods and content types, and how each is rendered in the UI.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+## Which Request Types Accepted
+
+APP_NAME accepts any valid HTTP request without configuration. This page explains how different HTTP methods and content types are handled and rendered.
+
+| Method    | Common use case                                                   |
+| --------- | ----------------------------------------------------------------- |
+| `GET`     | Webhooks that use query params, health checks, link previews      |
+| `POST`    | The most common webhook method — event payloads, form submissions |
+| `PUT`     | Full resource updates                                             |
+| `PATCH`   | Partial resource updates                                          |
+| `DELETE`  | Resource deletion events                                          |
+| `HEAD`    | Uptime checks and header-only requests                            |
+| `OPTIONS` | CORS preflight requests                                           |
+
+---
+
+## Content Types & How They Render
+
+The request body is rendered automatically based on the `Content-Type` header. APP_NAME detects the type and switches to the appropriate viewer.
+
+### JSON — `application/json`
+
+JSON bodies are displayed in the **Monaco editor** — the same editor that powers VS Code.
+
+Features:
+
+- Full syntax highlighting
+- Collapsible nodes for nested objects and arrays
+- In-editor search (`Ctrl+F` / `Cmd+F`)
+- Copy to clipboard
+
+```json
+{
+  "event": "payment.succeeded",
+  "data": {
+    "id": "ch_3NrQ2L2eZvKYlo2C1vPlRJGQ",
+    "amount": 4999,
+    "currency": "usd",
+    "customer": "cus_OkZBG6mq6QKVTX"
+  }
+}
+```
+
+---
+
+### XML — `application/xml` / `text/xml`
+
+XML bodies are also rendered in the Monaco editor with full XML syntax highlighting and collapsible nodes.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<notification>
+  <event>order.created</event>
+  <orderId>ORD-9821</orderId>
+  <total currency="usd">149.99</total>
+</notification>
+```
+
+---
+
+### Form Data — `multipart/form-data` / `application/x-www-form-urlencoded`
+
+Form submissions are rendered as a clean **key-value table** — no raw body parsing required.
+
+| Key     | Value            |
+| ------- | ---------------- |
+| `name`  | Jane Doe         |
+| `email` | jane@example.com |
+| `plan`  | pro              |
+
+---
+
+### Binary — Images, Videos, PDFs
+
+Binary payloads are rendered as **inline previews** directly in the request detail view:
+
+- **Images** (`image/png`, `image/jpeg`, `image/webp`, etc.) — displayed inline
+- **Videos** (`video/mp4`, `video/webm`, etc.) — embedded player
+- **PDFs** (`application/pdf`) — inline PDF viewer
+
+<Callout type="tip">
+  Binary previews are particularly useful when inspecting file upload webhooks
+  or media processing pipelines.
+</Callout>
+
+### Preview support
+
+| Content type      | Preview                       | Copy as Base64 |
+| ----------------- | ----------------------------- | -------------- |
+| `image/*`         | Inline image                  | ✅             |
+| `video/*`         | Embedded player               | ✅             |
+| `application/pdf` | Inline PDF viewer             | ✅             |
+| Any other binary  | File name, size, and download | ✅             |
+
+### Copy as Base64
+
+Every binary payload includes a **Copy** action in the request body detail view. Use it to grab the raw bytes as a Base64-encoded string without leaving the inspector — handy for replaying a payload in a test, pasting it into a script, or handing it to an API that expects an inline file.
+
+<Steps>
+  <Step title="Open the binary payload">
+    Select the request in the request list to open its body detail view.
+  </Step>
+  <Step title="Click Copy">
+    The action sits alongside the payload's toolbar other controls.
+  </Step>
+  <Step title="Paste where you need it">
+    The copied value is the Base64-encoded payload body, with no `data:` URI
+    prefix or surrounding quotes.
+  </Step>
+</Steps>
+
+<Callout type="info">
+  Copy as Base64 works for any binary payload, including types that can't be
+  previewed inline, such as `application/octet-stream` or `application/zip`.
+</Callout>
+
+---
+
+### Markdown — `text/markdown`
+
+Markdown bodies are also rendered in the Monaco editor with full Markdown syntax highlighting and collapsible nodes also Markdown preview available.
+
+---
+
+### HTML — `text/html`
+
+HTML bodies are also rendered in the Monaco editor with full HTML syntax highlighting and collapsible nodes also HTML preview available.
+
+---
+
+### Plain Text — `text/plain`
+
+Plain text bodies are displayed as-is in a monospace viewer.
+
+---
+
+### Unknown or Missing Content-Type
+
+If APP_NAME cannot determine the content type, the raw body is displayed as plain text. You can still read it, copy it, and export it.
+
+---
+
+### Query Parameters
+
+Regardless of HTTP method, all query parameters are displayed as **raw JSON** in the Monaco editor — separate from the raw URL, so they're easy to read and copy at a glance. Only the raw JSON view is available; there is no parsed key-value table.
+
+```json
+{
+  "page": "1",
+  "limit": "50",
+  "tag": ["webhook", "media"]
+}
+```
+
+<Callout type="tip">
+  {" "}
+  The Monaco editor gives you syntax highlighting, folding, search, and full
+  selection for copying the raw JSON. Use it when you need the exact query
+  parameters as sent.{" "}
+</Callout>
+
+---
+
+### Headers
+
+All request headers are captured and displayed in full as raw JSON in the Monaco editor — including custom headers like X-Webhook-Signature, X-Hub-Signature-256, or any proprietary header your integration adds. Only the raw JSON view is available; there is no parsed key-value table.
+
+```json
+{
+  "Content-Type": "application/json",
+  "X-Webhook-Signature": "sha256=...",
+  "X-Hub-Signature-256": "sha256=...",
+  "Authorization": "Bearer ..."
+}
+```
+
+<Callout type="info">
+  {" "}
+  Sensitive headers like `Authorization` are displayed as received. APP_NAME
+  does not redact or mask header values — treat your collection URL as you would
+  any private endpoint.{" "}
+</Callout>
+---
+
+### TypeScript Type Generation
+
+For any request with a JSON or XML body, APP_NAME can generate TypeScript interfaces directly from the payload. Click **Convert to TypeScript** in the request detail view to get a typed interface you can drop into your codebase immediately.
+
+**Input:**
+
+```json
+{
+  "event": "user.created",
+  "userId": 42,
+  "email": "jane@example.com",
+  "createdAt": "2024-11-01T10:00:00Z"
+}
+```
+
+**Generated output:**
+
+```typescript
+interface Payload {
+  event: string;
+  userId: number;
+  email: string;
+  createdAt: string;
+}
+```

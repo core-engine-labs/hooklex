@@ -1,0 +1,107 @@
+---
+title: Forward Request
+description: Learn how to proxy incoming requests to an external URL using the Forward Request action in APP_NAME.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+The **Forward Request** action lets **APP_NAME** act as a real-time proxy. When a request arrives at your endpoint, APP_NAME forwards it to any URL you specify — preserving method, headers, and body.
+
+<Callout type="warn">
+  Forward Request is a **paid feature available exclusively in the upcoming Cloud Version (Coming Soon)**.
+</Callout>
+
+<Callout type="info">
+  This action runs **during** the request lifecycle, before a response is
+  returned to the original caller.
+</Callout>
+
+## Common Use Cases
+
+- Forward production webhooks to your local development server.
+- Mirror requests to a staging environment for testing.
+- Relay data to a third-party service simultaneously.
+
+## Setting Up a Forward Request
+
+<Steps>
+  <Step>
+    ### Open APP_NAME and click "Create Custom Actions"
+
+    From your dashboard, click the **Create Custom Actions** button. Select collection from Dropdown for which you want a Forward Request action
+
+  </Step>
+
+  <Step>
+    ### Add a Forward Request Action
+
+     Select **Forward Request** from the action type menu.
+
+  </Step>
+
+  <Step>
+    ### Configure the Target URL and Other Details
+
+    Enter the destination URL where the request should be forwarded. This can be any valid HTTP/HTTPS URL, including `localhost` tunnels (e.g., via ngrok or Cloudflare Tunnel).
+
+| Field | Description |
+| --- | --- |
+| **Target URL** | The URL to forward the request to. |
+| **Method** | Override the HTTP method, or keep the original method. |
+| **Headers** | Add, remove, or override headers before forwarding the request. |
+| **Body** | Forward the original body, or replace it with a custom body. |
+| **Order** | Enter a positive order number. APP_NAME automatically fixes the order of the other actions. Negative order numbers are not allowed. |
+| **Enabled (optional)** | You can save an action as a draft by turning off the **Enabled** switch. |
+
+<Callout type="info">
+  {" "}
+  **Headers:** Enter header keys and values without quotation marks. For
+  example, use `content-type` and `application/json`, not `"content-type"` and
+  `"application/json"`.{" "}
+</Callout>
+
+<Callout type="warning">
+  {" "}
+  **Order** number must be positive not negative.{" "}
+</Callout>
+
+  </Step>
+
+  <Step>
+    ### Save and Test
+
+    Save the action and send a test request to your endpoint. APP_NAME will forward it to your target URL and log both the original request and the forward attempt.
+
+  </Step>
+</Steps>
+
+
+
+## Forwarding Behavior
+
+- **APP_NAME** forwards the request asynchronously, but within the same request lifecycle.
+- The original request is always stored and visible in your collection, regardless of whether the forward succeeds.
+- If the forward target is unreachable, the error is logged but does not affect the response returned to the original caller—unless a **Custom Response** action is also configured.
+
+
+
+
+## Combining with Conditions
+
+To apply conditional logic before executing a forward request, create a **Condition Action** and position it before the **Forward Request Action** in your pipeline sequence.
+
+If the condition evaluates to true, execution proceeds to the next action. If the condition fails, the action pipeline execution breaks immediately, stopping subsequent actions like forward from running.
+
+
+```text
+Action 1: Condition Action (body.event == "payment.success")
+  ├─ PASS → Continue to Action 2
+  └─ FAIL → Pipeline breaks (Execution stops)
+
+Action 2: Forward Request Action
+  └─ Sends payload to https://your-server.com/webhooks
+
+```
+
+See the [Rules](https://www.google.com/search?q=/docs/custom-actions/rules&utm_source=gemini) page for full details on configuring condition actions and pipeline behavior.

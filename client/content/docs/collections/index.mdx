@@ -1,0 +1,93 @@
+---
+title: Understanding Collections
+description: Understand what collections are, how they work, and why they are the foundation of APP_NAME.
+---
+
+import { Callout } from 'fumadocs-ui/components/callout';
+import { Card, Cards } from 'fumadocs-ui/components/card';
+
+
+
+## What is a collection?
+
+When you create a collection, APP_NAME gives you:
+
+- A **unique endpoint URL** — ready to receive any HTTP request immediately
+- A **request inbox** — every request sent to that URL is captured, stored, and displayed
+- A **search scope** — search and filter requests within the collection
+- An **action scope** — replay, export, or apply Custom Actions (Paid — Cloud Version Coming Soon) to any request in the collection
+
+Collections are isolated from each other. Requests sent to one collection's URL never appear in another.
+
+<Callout type="info">
+  You can create as many collections as you need — one per project, one per integration, one per environment. There is no limit on the number of collections.
+</Callout>
+
+---
+
+## Why collections exist
+
+Without organization, webhook inspection tools become a single flat list of requests. That works for a quick test. It falls apart when you're:
+
+- Running multiple integrations (Stripe, GitHub, Shopify) at the same time
+- Working across staging and production environments
+- Sharing a workspace with teammates
+- Coming back to a project after a few days and needing to find a specific request fast
+
+Collections solve this by giving every context its own isolated inbox.
+
+---
+
+## What lives inside a collection?
+
+```
+Collection
+├── Endpoint URL → The unique URL you point your webhook at
+├── Requests → Every HTTP request received, in order
+│   ├── Headers
+│   ├── Body (rendered by content type)
+│   ├── Query parameters
+│   ├── IP address
+└── Custom Actions → (Paid — Cloud Version Coming Soon) Forwarding rules, custom responses, condition logic
+```
+
+
+---
+
+## Understanding Collection URL structure
+
+Every collection gets a URL in this format:
+
+```text
+https://app-name.com/wh/{token}/path
+```
+
+The part from the start of the URL through `{token}` is fixed:
+
+```text
+https://app-name.com/wh/{token}
+```
+
+Only the path after `{token}` can change. For example:
+
+```text
+https://app-name.com/wh/{token}/aga/dgyd
+```
+
+You can use any path your integration requires. The path is not optional — if you omit it, the request will return a `404` error.
+
+You can use this URL anywhere a webhook destination is accepted — a third-party dashboard, a `curl` command, an environment variable, or a CLI pipeline.
+
+<Callout type="tip">
+  The fixed base URL — everything up to and including `{token}` — never changes. You can safely hardcode that base in your integration settings and append any path you need. Update your collection's behavior in APP_NAME without changing the fixed part.
+</Callout>
+
+---
+
+## Next steps
+
+<Cards>
+  <Card title="Create a Request" href="/docs/collections/create-request" description="Learn how to set up a collection and receive your first request." />
+  <Card title="How Request Types Handled" href="/docs/collections/how-request-types-handled" description="See how APP_NAME handles different HTTP methods and content types." />
+  <Card title="Examples" href="/docs/collections/examples" description="Real-world examples of collections in action." />
+</Cards>

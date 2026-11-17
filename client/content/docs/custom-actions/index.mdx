@@ -1,0 +1,65 @@
+---
+title: Understanding Custom Actions
+description: Unlock powerful request control with Custom Actions — a paid feature available in the upcoming Cloud Version that lets you forward requests, return custom responses, and apply conditional rules.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+## What is Custom Actions?
+
+Custom Actions is the most powerful part of **APP_NAME**. It gives you full control over what happens when a request hits your endpoint — not just inspect it, but _act_ on it in real time.
+
+<Callout type="warn">
+  Custom Actions is a **paid feature available exclusively in the upcoming Cloud Version (Coming Soon)**. The Open-Source Version (Free - Runs Locally) includes full server and client code for local execution, request capture, inspection, replay tracking, and offline data export.
+
+</Callout>
+
+## What Can You Do?
+
+With Custom Actions, every incoming request can trigger one or more of the following:
+
+- **Forward Request** — Proxy the incoming request to any external URL, with full control over headers and body.
+- **Custom Response** — Return a custom HTTP response (status, headers, body) directly to the caller.
+- **Conditional Rules** — Apply conditions that determine whether a forward or custom response action should execute.
+
+## Why It Matters
+
+Most webhook inspection tools are passive — they receive and display. **APP_NAME** goes further by letting you _respond_ and _relay_ in real time. This is critical for:
+
+- **Local development** — Forward production webhooks to your `localhost`.
+- **Testing** — Return mock responses to external services without touching your real backend.
+- **Automation** — Apply rules to selectively forward or respond based on request content.
+
+## How It Works
+
+Each collection endpoint can have a set of Custom Actions attached to it. When a request arrives, **APP_NAME** evaluates your actions in order:
+
+1. **Condition check** — If a condition is defined, it is evaluated first.
+2. **Action execution** — If the condition passes (or no condition exists), the action runs.
+3. **Break on failure** — If a condition fails, the remaining actions in the chain are skipped.
+
+Think of it like a loop: actions execute in sequence, and a failed condition breaks the loop.
+
+## Execution Order
+
+Forward actions run in ascending order based on their **Order** value. For example, if the lowest configured order number is `4` and the next is `5`, the action with order `4` executes first, followed by the action with order `5`. You do not need to start at `1`; APP_NAME simply runs the configured actions from the smallest positive order number to the largest.
+
+## Sections in This Chapter
+
+<Cards>
+  <Card
+    title="Forward Request"
+    href="/docs/custom-actions/forward-request"
+    description="Proxy incoming requests to any external URL in real time."
+  />
+  <Card
+    title="Custom Response"
+    href="/docs/custom-actions/custom-actions-response"
+    description="Return a fully custom HTTP response to the caller."
+  />
+  <Card
+    title="Rules"
+    href="/docs/custom-actions/rules"
+    description="Apply conditional logic to control when actions execute."
+  />
+</Cards>

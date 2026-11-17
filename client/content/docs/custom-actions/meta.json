@@ -1,0 +1,10 @@
+{
+  "title": "Custom Actions",
+  "icon": "Zap",
+  "pages": [
+    "index",
+    "forward-request",
+    "custom-response",
+    "rules"
+  ]
+}

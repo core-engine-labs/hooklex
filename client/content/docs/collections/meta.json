@@ -1,0 +1,5 @@
+{
+  "title": "Collections",
+  "icon": "Library",
+  "pages": ["index", "create-request", "how-request-types-handled", "examples"]
+}

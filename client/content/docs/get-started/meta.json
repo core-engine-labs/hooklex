@@ -1,0 +1,5 @@
+{
+  "title": "Get Started",
+  "icon":"Rocket",
+  "pages": ["index", "features", "why-us"]
+}
