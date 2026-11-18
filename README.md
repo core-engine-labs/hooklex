@@ -26,7 +26,7 @@
 
 <br />
 
-![Interface Preview](assets/preview.PNG)
+![Interface Preview](assets/preview.png)
 
 <br />
 
@@ -47,76 +47,26 @@ flowchart LR
 ## ✨ Key Features
 
 <table>
-  <tr>
-    <td width="50%" valign="top">
-
-### 🔗 Unique Endpoint URLs
-Every collection gets its own URL that accepts any incoming HTTP request. No setup, no guessing.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 🧰 Wide Method Support
-`GET` `POST` `PUT` `PATCH` `DELETE` `HEAD` `OPTIONS` `TRACE` plus `PURGE` and `PROPFIND`. Anything else gets a clean `405` with an `Allow` header.
-
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-### 🎨 Beautiful Content Preview
-The **Monaco editor** (the engine behind VS Code) gives you collapsible nodes, search, and syntax highlighting for JSON and XML. Preview images, videos, and PDFs inline, and copy binary bodies as **Base64**.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 📁 Organized Collections
-Group endpoints per project or client, like Postman or Insomnia, but built for *receiving* requests.
-
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-### 🔍 Global Search
-Search by collection name, body content, IP address, headers, and query parameters. Filter by `isReplay` and by public or private visibility.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 🔁 isReplay Tracking
-Re-send a request with `?isReplay=true&replayedFrom=<label>` and get a **REPLAY** badge plus an origin label right in the UI.
-
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-### 📤 Export Anywhere
-Export any request as **CSV**, **Markdown**, or **PDF** for spreadsheets, docs, and reports.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 🧬 TypeScript Type Generation
-Turn any JSON or XML body into a typed interface instantly.
-
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-
-### 🧹 Automatic Cleanup
-Background jobs remove expired and deleted data on a schedule you control, so your database never gets stuck.
-
-    </td>
-    <td width="50%" valign="top">
-
-### 🐳 Simple Docker Deployment
-Two images and a PostgreSQL database. Prisma migrations run automatically on startup.
-
-    </td>
-  </tr>
+<tr>
+<td width="50%" valign="top"><h3>🔗 Unique Endpoint URLs</h3><p>Every collection gets its own URL that accepts any incoming HTTP request. No setup, no guessing.</p></td>
+<td width="50%" valign="top"><h3>🧰 Wide Method Support</h3><p><code>GET</code> <code>POST</code> <code>PUT</code> <code>PATCH</code> <code>DELETE</code> <code>HEAD</code> <code>OPTIONS</code> <code>TRACE</code> plus <code>PURGE</code> and <code>PROPFIND</code>. Anything else gets a clean <code>405</code> with an <code>Allow</code> header.</p></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><h3>🎨 Beautiful Content Preview</h3><p>The <b>Monaco editor</b> (the engine behind VS Code) gives you collapsible nodes, search, and syntax highlighting for JSON and XML. Preview images, videos, and PDFs inline, and copy binary bodies as <b>Base64</b>.</p></td>
+<td width="50%" valign="top"><h3>📁 Organized Collections</h3><p>Group endpoints per project or client, like Postman or Insomnia, but built for <i>receiving</i> requests.</p></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><h3>🔍 Global Search</h3><p>Search by collection name, body content, IP address, headers, and query parameters. Filter by <code>isReplay</code> and by public or private visibility.</p></td>
+<td width="50%" valign="top"><h3>🔁 isReplay Tracking</h3><p>Re-send a request with <code>?isReplay=true&amp;replayedFrom=&lt;label&gt;</code> and get a <b>REPLAY</b> badge plus an origin label right in the UI.</p></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><h3>📤 Export Anywhere</h3><p>Export any request as <b>CSV</b>, <b>Markdown</b>, or <b>PDF</b> for spreadsheets, docs, and reports.</p></td>
+<td width="50%" valign="top"><h3>🧬 TypeScript Type Generation</h3><p>Turn any JSON or XML body into a typed interface instantly.</p></td>
+</tr>
+<tr>
+<td width="50%" valign="top"><h3>🧹 Automatic Cleanup</h3><p>Background jobs remove expired and deleted data on a schedule you control, so your database never gets stuck.</p></td>
+<td width="50%" valign="top"><h3>🐳 Simple Docker Deployment</h3><p>Two images and a PostgreSQL database. Prisma migrations run automatically on startup.</p></td>
+</tr>
 </table>
 
 <br />
