@@ -1,6 +1,6 @@
 ---
 title: Understanding Collections
-description: Understand what collections are, how they work, and why they are the foundation of APP_NAME.
+description: Understand what collections are, how they work, and why they are the foundation of hooklex.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
@@ -10,7 +10,7 @@ import { Card, Cards } from 'fumadocs-ui/components/card';
 
 ## What is a collection?
 
-When you create a collection, APP_NAME gives you:
+When you create a collection, hooklex gives you:
 
 - A **unique endpoint URL** — ready to receive any HTTP request immediately
 - A **request inbox** — every request sent to that URL is captured, stored, and displayed
@@ -79,7 +79,7 @@ You can use any path your integration requires. The path is not optional — if 
 You can use this URL anywhere a webhook destination is accepted — a third-party dashboard, a `curl` command, an environment variable, or a CLI pipeline.
 
 <Callout type="tip">
-  The fixed base URL — everything up to and including `{token}` — never changes. You can safely hardcode that base in your integration settings and append any path you need. Update your collection's behavior in APP_NAME without changing the fixed part.
+  The fixed base URL — everything up to and including `{token}` — never changes. You can safely hardcode that base in your integration settings and append any path you need. Update your collection's behavior in hooklex without changing the fixed part.
 </Callout>
 
 ---
@@ -88,6 +88,6 @@ You can use this URL anywhere a webhook destination is accepted — a third-part
 
 <Cards>
   <Card title="Create a Request" href="/docs/collections/create-request" description="Learn how to set up a collection and receive your first request." />
-  <Card title="How Request Types Handled" href="/docs/collections/how-request-types-handled" description="See how APP_NAME handles different HTTP methods and content types." />
+  <Card title="How Request Types Handled" href="/docs/collections/how-request-types-handled" description="See how hooklex handles different HTTP methods and content types." />
   <Card title="Examples" href="/docs/collections/examples" description="Real-world examples of collections in action." />
 </Cards>

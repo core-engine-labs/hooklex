@@ -42,5 +42,7 @@ next-env.d.ts
 
 src/generated/client
 
-/dist
 /logs
+
+# docker compose 
+docker-compose.yml

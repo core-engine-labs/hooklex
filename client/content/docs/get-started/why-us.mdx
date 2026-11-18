@@ -1,6 +1,6 @@
 ---
-title: Why APP_NAME?
-description: Understand what makes APP_NAME different from alternatives and why developers choose it.
+title: Why hooklex?
+description: Understand what makes hooklex different from alternatives and why developers choose it.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
@@ -16,13 +16,13 @@ Most webhook inspection tools do one thing: give you a URL and show you raw JSON
 - Sharing a request with a teammate to debug together
 - Needing to forward the request to your local dev server while also capturing it
 
-APP_NAME is built for the full debugging workflow, not just the first step.
+hooklex is built for the full debugging workflow, not just the first step.
 
 ---
 
-## How APP_NAME compares
+## How hooklex compares
 
-| Feature                           | APP_NAME         | Webhook.site | RequestBin | ngrok Inspect |
+| Feature                           | hooklex         | Webhook.site | RequestBin | ngrok Inspect |
 | --------------------------------- | ---------------- | ------------ | ---------- | ------------- |
 | Any HTTP method                   | ✅               | ✅           | ✅         | ✅            |
 | JSON / XML syntax highlighting    | ✅ Monaco editor | Basic        | Basic      | Basic         |
@@ -47,7 +47,7 @@ APP_NAME is built for the full debugging workflow, not just the first step.
 
 ### You don't just want to _see_ the request. You want to _work_ with it.
 
-Other tools treat the request as a log entry. APP_NAME treats it as a **workable artifact**:
+Other tools treat the request as a log entry. hooklex treats it as a **workable artifact**:
 
 - **Replay it** — resend the captured request with `?isReplay=true&replayedFrom=<your_custom_label>` to instantly tag and identify your re-run in the UI header and search history
 - **Share it** — make it public and hand the link to a teammate *(Cloud Version — Coming Soon)*
@@ -62,7 +62,7 @@ Flat request lists get unmanageable fast. Collections let you organize by projec
 
 Traditional debugging tools make it difficult to locate and trace re-executed test requests amidst thousands of incoming events in a busy log history.
 
-**APP_NAME** allows you to **manually replay** any captured request while tagging it directly in the UI dashboard. To initiate a replay with visual tracking, append two dedicated query parameters to your webhook endpoint:
+**hooklex** allows you to **manually replay** any captured request while tagging it directly in the UI dashboard. To initiate a replay with visual tracking, append two dedicated query parameters to your webhook endpoint:
 
 ```text
 ?isReplay=true&replayedFrom=<your_custom_label>
@@ -70,7 +70,7 @@ Traditional debugging tools make it difficult to locate and trace re-executed te
 
 | Parameter                          | Description                                                                                                                                                                                                         |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isReplay=true                      | Instructs APP_NAME to display a prominent REPLAY badge in the sidebar request list, making test runs instantly distinguishable from live incoming traffic.                                                          |
+| isReplay=true                      | Instructs hooklex to display a prominent REPLAY badge in the sidebar request list, making test runs instantly distinguishable from live incoming traffic.                                                          |
 | replayedFrom=`<your_custom_label>` | A user-provided identity label displayed prominently at the top of the request summary. It lets you instantly recognize the origin of the re-run and search for it directly without digging through parameter tabs. |
 
 Because these parameters surface key metadata directly in the UI, you can quickly locate, identify, and debug replayed requests in active developer environments
@@ -82,7 +82,7 @@ Because these parameters surface key metadata directly in the UI, you can quickl
 
 ---
 
-## Who builds with APP_NAME?
+## Who builds with hooklex?
 
 - **Indie hackers** integrating Stripe, Lemon Squeezy, or Paddle into their SaaS
 - **Backend developers** testing event-driven architectures locally

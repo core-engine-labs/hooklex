@@ -21,7 +21,8 @@ const nextConfig: NextConfig = {
       }
     ],
   },
-  output:"standalone"
+  output:"standalone",
+  devIndicators:false
 };
 
 const withMDX = createMDX();

@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: hooklex-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-hooklex}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hooklex_password}
+      POSTGRES_DB: ${POSTGRES_DB:-hooklex}
+    volumes:
+      - hooklex_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hooklex} -d ${POSTGRES_DB:-hooklex}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  server:
+    image: muhammadhassan34/hooklex-server:latest
+    container_name: hooklex-server
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: ${SERVER_PORT:-5000}
+      CLIENT_PORT: ${CLIENT_PORT:-3000}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-hooklex}:${POSTGRES_PASSWORD:-hooklex_password}@db:5432/${POSTGRES_DB:-hooklex}
+    ports:
+      - "${SERVER_PORT:-5000}:${SERVER_PORT:-5000}"
+    # Arguments are optional. Remove this whole `command` block to use the image defaults.
+    command:
+      - "dist/start-all.js" # mandatory script entry point
+      - "--read-limit"
+      - "${READ_LIMIT:-100}"
+      - "--write-limit"
+      - "${WRITE_LIMIT:-100}"
+      - "--expire-after"
+      - "${EXPIRE_AFTER:-1}"
+      - "--cron-schedule"
+      - "${CRON_SCHEDULE:-*/1 * * * *}"
+
+  client:
+    image: muhammadhassan34/hooklex-client:latest
+    container_name: hooklex-client
+    restart: unless-stopped
+    depends_on:
+      - server
+    environment:
+      CLIENT_PORT: ${CLIENT_PORT:-3000}
+      SERVER_PORT: ${SERVER_PORT:-5000}
+    ports:
+      - "${CLIENT_PORT:-3000}:${CLIENT_PORT:-3000}"
+
+volumes:
+  hooklex_pgdata:

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Background with Tailwind purple-700 -->
+  <rect width="100" height="100" rx="24" fill="#7E22CE"/>
+  
+  <!-- Icon lines -->
+  <g fill="none" stroke="white" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M28 34 C28 34 28 72 56 72 C74 72 78 58 78 50"/>
+    <path d="M28 34 L58 34"/>
+  </g>
+  
+  <!-- Dots -->
+  <circle cx="28" cy="34" r="5" fill="white"/>
+  <circle cx="58" cy="34" r="5" fill="white"/>
+  <circle cx="78" cy="50" r="5" fill="white"/>
+</svg>

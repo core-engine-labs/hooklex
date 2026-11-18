@@ -1,6 +1,6 @@
 ---
 title: How Request Types handled?
-description: Learn how APP_NAME handles different HTTP methods and content types, and how each is rendered in the UI.
+description: Learn how hooklex handles different HTTP methods and content types, and how each is rendered in the UI.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
@@ -8,7 +8,7 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 
 ## Which Request Types Accepted
 
-APP_NAME accepts any valid HTTP request without configuration. This page explains how different HTTP methods and content types are handled and rendered.
+hooklex accepts any valid HTTP request without configuration. This page explains how different HTTP methods and content types are handled and rendered.
 
 | Method    | Common use case                                                   |
 | --------- | ----------------------------------------------------------------- |
@@ -24,7 +24,7 @@ APP_NAME accepts any valid HTTP request without configuration. This page explain
 
 ## Content Types & How They Render
 
-The request body is rendered automatically based on the `Content-Type` header. APP_NAME detects the type and switches to the appropriate viewer.
+The request body is rendered automatically based on the `Content-Type` header. hooklex detects the type and switches to the appropriate viewer.
 
 ### JSON — `application/json`
 
@@ -144,7 +144,7 @@ Plain text bodies are displayed as-is in a monospace viewer.
 
 ### Unknown or Missing Content-Type
 
-If APP_NAME cannot determine the content type, the raw body is displayed as plain text. You can still read it, copy it, and export it.
+If hooklex cannot determine the content type, the raw body is displayed as plain text. You can still read it, copy it, and export it.
 
 ---
 
@@ -184,7 +184,7 @@ All request headers are captured and displayed in full as raw JSON in the Monaco
 
 <Callout type="info">
   {" "}
-  Sensitive headers like `Authorization` are displayed as received. APP_NAME
+  Sensitive headers like `Authorization` are displayed as received. hooklex
   does not redact or mask header values — treat your collection URL as you would
   any private endpoint.{" "}
 </Callout>
@@ -192,7 +192,7 @@ All request headers are captured and displayed in full as raw JSON in the Monaco
 
 ### TypeScript Type Generation
 
-For any request with a JSON or XML body, APP_NAME can generate TypeScript interfaces directly from the payload. Click **Convert to TypeScript** in the request detail view to get a typed interface you can drop into your codebase immediately.
+For any request with a JSON or XML body, hooklex can generate TypeScript interfaces directly from the payload. Click **Convert to TypeScript** in the request detail view to get a typed interface you can drop into your codebase immediately.
 
 **Input:**
 

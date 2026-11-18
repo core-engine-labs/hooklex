@@ -1,6 +1,6 @@
 ---
 title: Examples
-description: Real-world examples of using APP_NAME collections to inspect and debug HTTP requests.
+description: Real-world examples of using hooklex collections to inspect and debug HTTP requests.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
@@ -18,7 +18,7 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 3. Paste it as the webhook URL in your Stripe Dashboard under **Developers → Webhooks**
 4. Trigger a test event from Stripe
 
-**What you'll see in APP_NAME:**
+**What you'll see in hooklex:**
 
 ```json
 {
@@ -47,7 +47,7 @@ You can now inspect the full payload, check the `Stripe-Signature` header, and c
 
 1. Create a collection named `github-push-events`
 2. Go to your GitHub repository → **Settings → Webhooks → Add webhook**
-3. Set the Payload URL to your APP_NAME endpoint
+3. Set the Payload URL to your hooklex endpoint
 4. Set Content-Type to `application/json`
 5. Select the `push` event (or "Send me everything")
 6. Push a commit to trigger the webhook
@@ -101,7 +101,7 @@ curl -X POST "https://app-name.com/wh/{token}/up-file" \
   --data-binary @/path/to/file.bin
 ```
 
-**What you'll see in APP_NAME:**
+**What you'll see in hooklex:**
 
 - The uploaded file rendered as an **inline preview** (base64) inside body detail view section
 - Detected **MIME type**, **file size**, and the raw `Content-Type` header you sent
@@ -135,13 +135,13 @@ curl -X POST "https://app-name.com/wh/{token}/up-file" \
 
 Use the replay mechanism as a targeted debugging tool to test fixes against captured payloads without losing track of your test runs in busy request logs.
 
-Because **APP_NAME** logs each request independently without automatically linking requests together, you manually provide a custom label in `replayedFrom` so you can instantly recognize and locate the re-run directly in the UI.
+Because **hooklex** logs each request independently without automatically linking requests together, you manually provide a custom label in `replayedFrom` so you can instantly recognize and locate the re-run directly in the UI.
 
 <Steps>
   <Step>
      Copy the original request body and headers
 
-    Open the target request in the **APP_NAME** detail view and copy the raw payload and header values.
+    Open the target request in the **hooklex** detail view and copy the raw payload and header values.
 
   </Step>
 
@@ -164,14 +164,14 @@ Because **APP_NAME** logs each request independently without automatically linki
   <Step>
     Inspect the execution in the UI
 
-    Open **APP_NAME** to view the incoming replayed request. The **REPLAY** badge and `Replayed (from trg_9f3a21)` header banner give you immediate confirmation that the request was logged under your custom identity tag.
+    Open **hooklex** to view the incoming replayed request. The **REPLAY** badge and `Replayed (from trg_9f3a21)` header banner give you immediate confirmation that the request was logged under your custom identity tag.
 
   </Step>
 
   <Step>
    Apply fix, then search and replay again
 
-    Apply your code patch and re-run the `curl` command. Use the search bar in **APP_NAME** to query `trg_9f3a21` and instantly bring up all related re-runs to confirm successful execution.
+    Apply your code patch and re-run the `curl` command. Use the search bar in **hooklex** to query `trg_9f3a21` and instantly bring up all related re-runs to confirm successful execution.
 
   </Step>
 </Steps>
@@ -195,7 +195,7 @@ Because **APP_NAME** logs each request independently without automatically linki
   Making requests public via shareable web links is a paid feature available in the upcoming **Cloud Version**. In the local Open-Source version, you can share payloads using the local **Export** features (CSV, Markdown, PDF).
 </Callout>
 
-**Scenario:** You've captured a malformed webhook payload from a third-party integration. You want to share it with a teammate without giving them access to your APP_NAME account.
+**Scenario:** You've captured a malformed webhook payload from a third-party integration. You want to share it with a teammate without giving them access to your hooklex account.
 
 **Steps:**
 
@@ -232,6 +232,6 @@ Each exported PDF includes the full request detail: method, URL, headers, body, 
   <Card
     title="How Request Types Handled"
     href="/docs/collections/how-request-types-handled"
-    description="See how every content type is rendered in APP_NAME."
+    description="See how every content type is rendered in hooklex."
   />
 </Cards>

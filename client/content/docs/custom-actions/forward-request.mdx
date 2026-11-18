@@ -1,12 +1,12 @@
 ---
 title: Forward Request
-description: Learn how to proxy incoming requests to an external URL using the Forward Request action in APP_NAME.
+description: Learn how to proxy incoming requests to an external URL using the Forward Request action in hooklex.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 import { Step, Steps } from "fumadocs-ui/components/steps";
 
-The **Forward Request** action lets **APP_NAME** act as a real-time proxy. When a request arrives at your endpoint, APP_NAME forwards it to any URL you specify — preserving method, headers, and body.
+The **Forward Request** action lets **hooklex** act as a real-time proxy. When a request arrives at your endpoint, hooklex forwards it to any URL you specify — preserving method, headers, and body.
 
 <Callout type="warn">
   Forward Request is a **paid feature available exclusively in the upcoming Cloud Version (Coming Soon)**.
@@ -27,7 +27,7 @@ The **Forward Request** action lets **APP_NAME** act as a real-time proxy. When 
 
 <Steps>
   <Step>
-    ### Open APP_NAME and click "Create Custom Actions"
+    ### Open hooklex and click "Create Custom Actions"
 
     From your dashboard, click the **Create Custom Actions** button. Select collection from Dropdown for which you want a Forward Request action
 
@@ -51,7 +51,7 @@ The **Forward Request** action lets **APP_NAME** act as a real-time proxy. When 
 | **Method** | Override the HTTP method, or keep the original method. |
 | **Headers** | Add, remove, or override headers before forwarding the request. |
 | **Body** | Forward the original body, or replace it with a custom body. |
-| **Order** | Enter a positive order number. APP_NAME automatically fixes the order of the other actions. Negative order numbers are not allowed. |
+| **Order** | Enter a positive order number. hooklex automatically fixes the order of the other actions. Negative order numbers are not allowed. |
 | **Enabled (optional)** | You can save an action as a draft by turning off the **Enabled** switch. |
 
 <Callout type="info">
@@ -71,7 +71,7 @@ The **Forward Request** action lets **APP_NAME** act as a real-time proxy. When 
   <Step>
     ### Save and Test
 
-    Save the action and send a test request to your endpoint. APP_NAME will forward it to your target URL and log both the original request and the forward attempt.
+    Save the action and send a test request to your endpoint. hooklex will forward it to your target URL and log both the original request and the forward attempt.
 
   </Step>
 </Steps>
@@ -80,7 +80,7 @@ The **Forward Request** action lets **APP_NAME** act as a real-time proxy. When 
 
 ## Forwarding Behavior
 
-- **APP_NAME** forwards the request asynchronously, but within the same request lifecycle.
+- **hooklex** forwards the request asynchronously, but within the same request lifecycle.
 - The original request is always stored and visible in your collection, regardless of whether the forward succeeds.
 - If the forward target is unreachable, the error is logged but does not affect the response returned to the original caller—unless a **Custom Response** action is also configured.
 

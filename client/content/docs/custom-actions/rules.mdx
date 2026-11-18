@@ -1,6 +1,6 @@
 ---
 title: Rules (Conditional Logic)
-description: Use Condition actions to control execution flow before Forward Request and Custom Response actions in APP_NAME.
+description: Use Condition actions to control execution flow before Forward Request and Custom Response actions in hooklex.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
@@ -13,7 +13,7 @@ import { Callout } from "fumadocs-ui/components/callout";
 
 ## How the Execution Loop Works
 
-Actions in **APP_NAME** execute sequentially in a defined pipeline order. A **Condition** action must be placed prior to any action you want to protect.
+Actions in **hooklex** execute sequentially in a defined pipeline order. A **Condition** action must be placed prior to any action you want to protect.
 
 ```text
 Action 1: Condition Action → PASS → Continue execution
@@ -27,9 +27,9 @@ Action 4: Custom Response Action → (Never reached)
 
 | Step | What Happens                                                                                           |
 | ---- | ------------------------------------------------------------------------------------------------------ |
-| 1    | APP_NAME evaluates a **Condition action** in the pipeline sequence                                     |
-| 2    | If the condition **passes**, APP_NAME proceeds to the next action (such as Forward or Custom Response) |
-| 3    | APP_NAME continues down the action pipeline step-by-step                                               |
+| 1    | hooklex evaluates a **Condition action** in the pipeline sequence                                     |
+| 2    | If the condition **passes**, hooklex proceeds to the next action (such as Forward or Custom Response) |
+| 3    | hooklex continues down the action pipeline step-by-step                                               |
 | 4    | If any condition **fails**, the execution loop breaks immediately                                      |
 | 5    | All remaining actions below the failed condition are skipped                                           |
 
@@ -113,6 +113,6 @@ Use an unguarded Custom Response action at the end of your chain as a guaranteed
 
 - **Positioning is key.** Place Condition actions prior to the Forward Request or Custom Response actions they govern.
 - **Failures halt execution.** Remember that a failed Condition action terminates the pipeline immediately; use fallbacks before any breaking condition if necessary.
-- **Test incrementally.** Add actions one at a time and inspect APP_NAME's request logs to verify evaluation flow.
+- **Test incrementally.** Add actions one at a time and inspect hooklex's request logs to verify evaluation flow.
 
 

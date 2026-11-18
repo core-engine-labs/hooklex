@@ -1,13 +1,13 @@
 ---
 title: Custom Response
-description: Return a fully custom HTTP response to the caller using APP_NAME's Custom Response action — with or without conditions.
+description: Return a fully custom HTTP response to the caller using hooklex's Custom Response action — with or without conditions.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
 import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Tabs, Tab } from "fumadocs-ui/components/tabs";
 
-The **Custom Response** action lets you define exactly what **APP_NAME** returns to the original caller. You control the status code, headers, and body — turning your endpoint into a fully programmable mock server.
+The **Custom Response** action lets you define exactly what **hooklex** returns to the original caller. You control the status code, headers, and body — turning your endpoint into a fully programmable mock server.
 
 <Callout type="warn">
   Custom Response is a **paid feature available exclusively in the upcoming Cloud Version (Coming Soon)**.
@@ -15,7 +15,7 @@ The **Custom Response** action lets you define exactly what **APP_NAME** returns
 
 ## Two Ways to Use Custom Response
 
-**APP_NAME** supports two variants of the Custom Response action:
+**hooklex** supports two variants of the Custom Response action:
 
 <Tabs items={['Without Condition', 'With Condition']}>
   <Tab value="Without Condition">
@@ -56,7 +56,7 @@ The **Custom Response** action lets you define exactly what **APP_NAME** returns
 </Tabs>
 
 <Callout type="info">
-  If **no** Custom Response action is configured, APP_NAME returns a default
+  If **no** Custom Response action is configured, hooklex returns a default
   `200 OK` response to the caller.
 </Callout>
 
@@ -64,7 +64,7 @@ The **Custom Response** action lets you define exactly what **APP_NAME** returns
 
 <Steps>
   <Step>
-    ### Open APP_NAME and click "Create Custom Actions"
+    ### Open hooklex and click "Create Custom Actions"
 
     From your dashboard, click the **Create Custom Actions** button. Select collection from Dropdown for which you want a Custom Response action
 
@@ -87,7 +87,7 @@ The **Custom Response** action lets you define exactly what **APP_NAME** returns
     | **Status Code** | Any valid HTTP status code (e.g., `200`, `422`, `503`) |
     | **Headers**     | Key-value pairs to include in the response             |
     | **Body**        | The raw response body (JSON, plain text, XML, etc.)    |
-    | **Order** | Enter a positive order number. APP_NAME automatically fixes the order of the other actions. Negative order numbers are not allowed. |
+    | **Order** | Enter a positive order number. hooklex automatically fixes the order of the other actions. Negative order numbers are not allowed. |
     | **Enabled (optional)** | You can save an action as a draft by turning off the **Enabled** switch. |
 
 <Callout type="info">
@@ -116,5 +116,5 @@ The **Custom Response** action lets you define exactly what **APP_NAME** returns
 - Custom Response actions execute **after** any Forward Request actions in the chain, unless a condition stops the chain earlier.
 - Only one Custom Response can be returned per request. Once a Custom Response executes, the response is sent and the chain ends.
 - If multiple Custom Response actions exist, they execute in ascending order based on their **Order** value until one completes successfully.
-- Each Custom Response action must have a positive **Order** number. Negative order numbers are not allowed. APP_NAME automatically arranges the actions using these order values.
+- Each Custom Response action must have a positive **Order** number. Negative order numbers are not allowed. hooklex automatically arranges the actions using these order values.
 - For example, if two Custom Response actions have orders `3` and `7`, the action with order `3` runs first. If it succeeds, the chain ends and the action with order `7` does not run.

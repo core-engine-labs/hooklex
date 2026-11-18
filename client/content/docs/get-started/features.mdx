@@ -1,6 +1,6 @@
 ---
 title: Features Overview
-description: A complete overview of all the capabilities APP_NAME provides for inspecting and managing HTTP requests.
+description: A complete overview of all the capabilities hooklex provides for inspecting and managing HTTP requests.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
@@ -8,7 +8,7 @@ import { Card, Cards } from "fumadocs-ui/components/card";
 
 ## Supported HTTP Methods
 
-APP_NAME accepts and routes the following HTTP methods without extra configuration:
+hooklex accepts and routes the following HTTP methods without extra configuration:
 
 - **Standard HTTP Methods:** `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`, `TRACE`
 - **Supported Extension Methods:** `PURGE`, `PROPFIND`
@@ -43,7 +43,7 @@ Group related webhook endpoints into **collections** — a familiar concept if y
 
 ## Powerful Search
 
-APP_NAME's global search goes far beyond filtering by name. You can search across:
+hooklex's global search goes far beyond filtering by name. You can search across:
 
 - collection name
 - Body content
@@ -95,7 +95,7 @@ When a webhook arrives and you need to re-test it, take your original identifier
 
 ```
 
-APP_NAME evaluates these parameters as follows:
+hooklex evaluates these parameters as follows:
 
 | Parameter                | Behavior                                                                                                                                                                                                               |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -112,7 +112,7 @@ Both parameters must be supplied together:
 
 The validation rule is strict: send **both** parameters, or send **neither**. Requests containing only one parameter are rejected with a `400 Bad Request`.
 
-`replayedFrom` is stored purely for developer reference and UI display. APP_NAME does not enforce strict validation schemas or background linking on custom replay tags.
+`replayedFrom` is stored purely for developer reference and UI display. hooklex does not enforce strict validation schemas or background linking on custom replay tags.
 
 ### Request Type Behavior
 
@@ -137,7 +137,7 @@ The isReplay mechanism is ideal for event-driven systems and third-party webhook
   local exports.
 </Callout>
 
-Custom Actions is the power tier of APP_NAME. On top of everything above, you get:
+Custom Actions is the power tier of hooklex. On top of everything above, you get:
 
 - **Forward requests** — proxy incoming requests to your own server in real time
 - **Custom responses** — return a specific status code, headers, and body instead of the default

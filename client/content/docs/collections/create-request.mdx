@@ -1,6 +1,6 @@
 ---
 title: Create a Request
-description: Learn how to create a collection and start receiving HTTP requests in APP_NAME.
+description: Learn how to create a collection and start receiving HTTP requests in hooklex.
 ---
 
 import { Callout } from "fumadocs-ui/components/callout";
@@ -10,7 +10,7 @@ import { Step, Steps } from "fumadocs-ui/components/steps";
 
 <Steps>
   <Step>
-    ### Open APP_NAME and click "Create Collection"
+    ### Open hooklex and click "Create Collection"
     From your dashboard, click the **Create Collection** button. Give your collection a name that reflects its purpose — for example, `stripe-webhooks`, `github-events`, or `local-dev`.
   </Step>
   <Step>
@@ -37,7 +37,7 @@ https://app-name.com/wh/{token}/path
   </Step>
   <Step>
     ### Watch requests arrive in real time
-    Go back to APP_NAME. As soon as a request hits your endpoint, it appears in the collection's request list — instantly, with no refresh needed.
+    Go back to hooklex. As soon as a request hits your endpoint, it appears in the collection's request list — instantly, with no refresh needed.
   </Step>
 </Steps>
 ---
@@ -153,7 +153,7 @@ To replay a request, append two query parameters to your endpoint URL with your 
 
 | Parameter                          | Description                                                                                                                                                                                                         |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| isReplay=true                      | Instructs APP_NAME to display a prominent REPLAY badge in the sidebar request list, making test runs instantly distinguishable from live incoming traffic.                                                          |
+| isReplay=true                      | Instructs hooklex to display a prominent REPLAY badge in the sidebar request list, making test runs instantly distinguishable from live incoming traffic.                                                          |
 | replayedFrom=`<your_custom_label>` | A user-provided identity label displayed prominently at the top of the request summary. It lets you instantly recognize the origin of the re-run and search for it directly without digging through parameter tabs. |
 
 <Callout type="warning">
@@ -176,7 +176,7 @@ The replayed request appears in your collection separately and is clearly marked
   Making requests public via shareable web links is a **paid feature available exclusively in the upcoming Cloud Version (Coming Soon)**. In the **Open-Source Version (Free - Runs Locally)**, all captured requests remain private on your local machine, and you can share request payloads offline using local exports (CSV, Markdown, or PDF).
 </Callout>
 
-Any captured request can be made public in the Cloud version. Once public, anyone with the link can view the full request details — headers, body, query params, and metadata — without needing an APP_NAME account.
+Any captured request can be made public in the Cloud version. Once public, anyone with the link can view the full request details — headers, body, query params, and metadata — without needing an hooklex account.
 
 This is useful for:
 
