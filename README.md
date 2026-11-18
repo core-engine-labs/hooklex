@@ -26,7 +26,7 @@
 
 <br />
 
-![Interface Preview](assets/preview.png)
+![Interface Preview](assets/preview.PNG)
 
 <br />
 
